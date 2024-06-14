@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Модель ИИ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js" defer></script>
+    <link rel="icon" type="image" href="/static/images/ai.png">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body class="bg-blue-400">
+<div onClick="window.open('http://127.0.0.1:5000/');"
+     class="flex items-center justify-center place-content-center mx-2 my-2 h-20 w-48 bg-black cursor-pointer hover:shadow hover:bg-gray-700"><span
+        class="flex mx-2 justify-center items-center font-light text-3xl text-stone-50 font-sans">На главную</span>
+</div>
+<div class="flex items-center justify-center font-sans h-24 bg-amber-500 mx-16 my-6 rounded-lg"><span class="text-6xl">Выберете фото для анализа нейросетью в поле ниже</span>
+</div>
+<form id="uploadForm" class="flex items-center justify-center" enctype="multipart/form-data">
+    <input type="file" name="photo" id="PhotoInput">
+    <input type="submit" class="bg-white h-12 w-48" value="Загрузить" onclick="uploadPicture()">
+</form>
+<div class="flex items-center justify-center">
+    <img class="h-[500px] w-[400px]" id="photo-preview" src="#" alt="">
+</div>
+<div class="flex items-center justify-center w-full mt-8 mb-3 h-20 bg-red-700 rounded-lg"><span id="output"
+                                                                                                 class="text-3xl text-stone-50 font-sans"></span>
+
+</div>
+<script>
+   $(document).ready(function() {
+            // Предпросмотр выбранного файла при изменении поля ввода
+            $('input[type="file"]').change(function() {
+                var file = $(this)[0].files[0];
+                var reader = new FileReader();
+                reader.onloadend = function() {
+                    $('#photo-preview').attr('src', reader.result);
+                }
+                reader.readAsDataURL(file);
+            });
+
+            // Обновление данных при отправке формы
+            $('form').submit(function(event) {
+                event.preventDefault();  // Предотвращение стандартной отправки формы
+                var formData = new FormData($(this)[0]);
+
+                $.ajax({
+                    url: '/process_photo',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        $('#output').text(response.output);
+                    }
+                });
+            });
+        })
+</script>
+
+
+</body>
+<style>
+    img {
+        pointer-events: none;
+    }
+</style>
+</html>
