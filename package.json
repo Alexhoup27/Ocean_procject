@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "devDependencies": {
     "tailwindcss": "^3.3.3"
@@ -7,3 +8,14 @@
     "flowbite": "^1.8.1"
   }
 }
+=======
+{
+  "devDependencies": {
+    "tailwindcss": "^3.3.3"
+  },
+  "dependencies": {
+    "@heroicons/vue": "^2.0.18",
+    "flowbite": "^1.8.1"
+  }
+}
+>>>>>>> 151f541dd6f3e921f5c63d2f101d00fbe13804db
